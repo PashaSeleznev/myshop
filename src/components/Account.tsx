@@ -48,7 +48,7 @@ const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete,
   const pass = useRef<HTMLInputElement>(null)
   const username = useRef<HTMLInputElement>(null)
   const [result, setResult] = useState<User>(store.get('result') || {})
-  const [newName, setNewName] = useState<string>(result.name)
+  const [newName, setNewName] = useState<User['name']>(result.name)
 
   const fetchUsers = async () => {
     const storedUsers = store.get('users');

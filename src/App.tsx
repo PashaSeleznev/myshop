@@ -20,7 +20,7 @@ function App() {
     store.set('orders', orders);
   }, [orders]); 
 
-  function addToOrder (item: ItemType) {
+  const addToOrder = (item: ItemType) => {
     if (inAccount) {
       let isInArray = false
     const updatedOrders: ItemsType = orders.map ((el: ItemType) => {
@@ -40,12 +40,12 @@ function App() {
     }
   }
 
-  function deleteOrder (id: ItemType['id']) {
+  const deleteOrder = (id: ItemType['id']) => {
     setDeleteItemId(id)
     setShowDeleteModal(true)
   }
 
-  function handleDelete () {
+  const handleDelete = () =>{
     const filteredOrders: ItemsType = orders.filter((el) => (
       el.id !== deleteItemId
     ))
@@ -53,7 +53,7 @@ function App() {
     setOrders(filteredOrders)
   }
 
-  function handleCancel () {
+  const handleCancel = () => {
     setShowDeleteModal(false)
     setDeleteItemId(0)
   }

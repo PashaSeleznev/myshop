@@ -23,17 +23,21 @@ const MainPage: FC<MainPageProps> = ({
     showDeleteModal,
     inAccount
 }) => {
-  
   const [showFullItem, setShowFullItem] = useState<boolean>(false) 
   const [fullItem, setFullItem] = useState<ItemType | null>(null)
   const newItems: ItemsType = items.map(item => ({ ...item, quantity: 0 }));
   const storedCurrentItems: ItemsType = store.get('currentItems') || newItems
   const [currentItems, setCurrentItems] = useState<ItemsType | []>(storedCurrentItems)
-  const [filteredByCategory, setFilteredByCategory] = useState<ItemsType | []>(newItems)
+  const storedFilteredByCategory: ItemsType = store.get('filteredByCategory') || newItems;
+  const [filteredByCategory, setFilteredByCategory] = useState<ItemsType | []>(storedFilteredByCategory)
 
   useEffect(() => {
     store.set('currentItems', currentItems);
   }, [currentItems]);
+
+  useEffect(() => {
+    store.set('filteredByCategory', filteredByCategory);
+  }, [filteredByCategory]);
 
   function onShowItem (item: ItemType) {
     setFullItem(item)
