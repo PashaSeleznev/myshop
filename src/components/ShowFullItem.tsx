@@ -6,7 +6,6 @@ import { ItemType } from '../data';
 type ShowFullItemProps = {item: ItemType | null } & Omit<ItemsSectionProps, 'items'> & {closeItem: () => void}
 
 const ShowFullItem: FC<ShowFullItemProps> = ({item, onShowItem, onAdd, closeItem, inAccount}) => {
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const handleAddClick = () => {
     if (!inAccount && item) {

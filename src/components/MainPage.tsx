@@ -4,7 +4,7 @@ import ShowFullItem from "./ShowFullItem"
 import AgreeToDelete from "./AgreeToDelete"
 import { ItemsType, items } from "../data"
 import Search from "./Search";
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, useCallback, useMemo } from "react";
 import store from "store"
 import { ItemType } from "../data"
 
@@ -23,9 +23,12 @@ const MainPage: FC<MainPageProps> = ({
     showDeleteModal,
     inAccount
 }) => {
+
+  console.log('Main')
+
   const [showFullItem, setShowFullItem] = useState<boolean>(false) 
   const [fullItem, setFullItem] = useState<ItemType | null>(null)
-  const newItems: ItemsType = items.map(item => ({ ...item, quantity: 0 }));
+  const newItems: ItemsType = useMemo(() => items.map(item => ({ ...item, quantity: 0 })), []);
   const storedCurrentItems: ItemsType = store.get('currentItems') || newItems
   const [currentItems, setCurrentItems] = useState<ItemsType | []>(storedCurrentItems)
   const storedFilteredByCategory: ItemsType = store.get('filteredByCategory') || newItems;
@@ -48,21 +51,21 @@ const MainPage: FC<MainPageProps> = ({
     setShowFullItem(!showFullItem)
   }
 
-  function chooseCategory (category: string) {
+  const chooseCategory = useCallback((category: string) => {
     const filteredItems:ItemsType | null = newItems.filter((el) => (
       el.category.includes(' ' + category + ' ')
     ))
     setCurrentItems(filteredItems)
     setFilteredByCategory(filteredItems)
-  }
+  }, [newItems])
   
-  function findItem (text: string) {
+  const findItem = useCallback((text: string) => {
     const value = text.toLowerCase()
     const filteredItems = filteredByCategory.filter((el) => (
       el.title.toLowerCase().includes(value)
     ))
     setCurrentItems(filteredItems)
-  }
+  }, [filteredByCategory])
 
   return (
     <>

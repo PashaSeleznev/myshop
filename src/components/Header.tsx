@@ -1,4 +1,4 @@
-import { useState, FC } from "react"
+import { useState, FC, useMemo} from "react"
 import Order from "./Order";
 import { Link, useLocation } from "react-router-dom";
 import { ItemsType, ItemType } from "../data";
@@ -11,17 +11,14 @@ type HeaderProps = {
   inAccount: boolean
 }
 
-const Header: FC<HeaderProps> =({orders, onDelete, plus, minus, inAccount}) => {
+const Header: FC<HeaderProps> = ({orders, onDelete, plus, minus, inAccount}) => {
+
   const [cartOpen, setCartOpen] = useState<boolean>(false)
   const location = useLocation()
 
-  function summary (orders: ItemsType) {
-    let sum = 0
-    orders.forEach((el: ItemType) => {
-      sum += el.price*(el.quantity ?? 0)
-    })
-    return sum
-  }
+  const totalSum = useMemo(() => {
+    return orders.reduce((sum, item) => sum + item.price * (item.quantity ?? 0), 0);
+  }, [orders]);
 
   return (
     <header>
@@ -67,7 +64,7 @@ const Header: FC<HeaderProps> =({orders, onDelete, plus, minus, inAccount}) => {
                   plus={plus} 
                   minus={minus} 
                   />)}
-                  <p className="sum">Сумма: {summary(orders).toFixed(2)} RUB</p>
+                  <p className="sum">Сумма: {totalSum.toFixed(2)} RUB</p>
                 </ul> :
                 <h2 className="empty">В корзине ничего нет!</h2>}
               </div>

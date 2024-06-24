@@ -1,11 +1,11 @@
-import { useRef, useState, useEffect, FC } from "react"
+import { useRef, useState, useEffect, FC, memo } from "react"
 import store from "store";
 
 type SearchProps = {
   findItem: (text: string) => void
 }
 
-const Search: FC<SearchProps> = ({ findItem }) => {
+const Search: FC<SearchProps> = memo(({ findItem }) => {
   const [filter, setFilter] = useState<string>(store.get("filter") || "");
   const input = useRef<HTMLInputElement>(null);
 
@@ -33,6 +33,6 @@ const Search: FC<SearchProps> = ({ findItem }) => {
       onChange={handleInputChange}
     />
   );
-}
+})
 
 export default Search

@@ -1,5 +1,5 @@
 import Item from './Item';
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect, FC} from 'react';
 import { ItemsType, ItemType } from '../data';
 
 export type ItemsSectionProps = {
@@ -11,7 +11,7 @@ export type ItemsSectionProps = {
 
 const ItemsSection: FC<ItemsSectionProps> = ({items, onAdd, onShowItem, inAccount}) => {
   const [empty, setEmpty] = useState<boolean>(false)
-
+  console.log('ItemsSection')
   useEffect(() => {
     if (items.length === 0) {
       setEmpty(true);

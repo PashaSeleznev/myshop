@@ -1,10 +1,13 @@
-import { FC } from "react"
+import { FC, memo } from "react"
 
 type CategoriesProps = {
   chooseCategory: (category: string) => void
 }
 
-const Categories: FC<CategoriesProps> = ({chooseCategory}) => {
+const Categories: FC<CategoriesProps> = memo(({chooseCategory}) => {
+
+  console.log('Categories')
+
   const categories = [
     {
         key: 'all',
@@ -39,6 +42,6 @@ const Categories: FC<CategoriesProps> = ({chooseCategory}) => {
         ))}
     </div>
   )
-}
+})
 
 export default Categories
