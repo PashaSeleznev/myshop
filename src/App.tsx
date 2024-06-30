@@ -8,7 +8,6 @@ import Account from "./components/Account"
 import store from "store"
 import { ItemType, ItemsType } from "./data";
 
-
 function App() {
   const storedOrders: ItemsType | [] = store.get('orders') || [];
   const [orders, setOrders] = useState<ItemsType | []>(storedOrders)

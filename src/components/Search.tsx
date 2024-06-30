@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, FC, memo } from "react"
+import { useState, FC, memo } from "react"
 import store from "store";
 
 type SearchProps = {
@@ -7,21 +7,12 @@ type SearchProps = {
 
 const Search: FC<SearchProps> = memo(({ findItem }) => {
   const [filter, setFilter] = useState<string>(store.get("filter") || "");
-  const input = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (input.current) {
-      input.current.value = filter;
-    }
-  }, [filter])
-
-  function handleInputChange () {
-    if (input.current) {
-      const value = input.current.value;
-      setFilter(value);
-      store.set("filter", value);
-      findItem(value);
-    }
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
+    setFilter(value);
+    store.set("filter", value);
+    findItem(value);
   }
 
   return (
@@ -29,7 +20,7 @@ const Search: FC<SearchProps> = memo(({ findItem }) => {
       className="search-form"
       type="text"
       placeholder="Введите название товара"
-      ref={input}
+      value={filter}
       onChange={handleInputChange}
     />
   );

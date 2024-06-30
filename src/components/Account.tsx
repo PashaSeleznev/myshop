@@ -1,5 +1,5 @@
 import AgreeToDelete from "./AgreeToDelete"
-import { useState, useEffect, useRef, FC, ChangeEvent } from "react";
+import { useState, useEffect, FC, ChangeEvent } from "react";
 import store from "store";
 import { ContactsProps } from "./Contacts";
 
@@ -44,9 +44,9 @@ const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete,
   const [hasEnterError, setHasEnterError] = useState<boolean>(false)
   const [hasRegError, setHasRegError] = useState<boolean>(false)
   const [users, setUsers] = useState<Users | []>(store.get('users') || [])
-  const email = useRef<HTMLInputElement>(null)
-  const pass = useRef<HTMLInputElement>(null)
-  const username = useRef<HTMLInputElement>(null)
+  const [email, setEmail] = useState<string>('')
+  const [pass, setPass] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
   const [result, setResult] = useState<User>(store.get('result') || {})
   const [newName, setNewName] = useState<User['name']>(result.name)
 
@@ -82,34 +82,29 @@ const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete,
   }, [isEntered, toLogin])
 
   function toEnter () {
-    if (email.current && pass.current) {
-      const res = {
-        email: email.current.value,
-        password: pass.current.value
-      }
-      const foundUser = users.find(user => user.email === res.email && user.website === res.password);
-  
-      if (foundUser) {
-        setIsEntered(true);
-        setResult(foundUser);
-      } else {
-        setHasEnterError(true);
-      }
-      email.current.value = '';
-      pass.current.value = '';
+    const res = {
+      email: email,
+      password: pass
+    };
+    const foundUser = users.find(user => user.email === res.email && user.website === res.password);
+    if (foundUser) {
+      setIsEntered(true);
+      setResult(foundUser);
+    } else {
+      setHasEnterError(true);
     }
-      
+    setEmail('')
+    setPass('') 
   }
 
   function toCreate () {
-    if (email.current && pass.current && username.current) {
-      const res = {
-        email: email.current.value,
-        website: pass.current.value,
-        name: username.current.value,
-        id: users.length + 1,
-      }
-      const emailCheck = users.find(user => user.email === res.email);
+    const res = {
+      email: email,
+      website: pass,
+      name: username,
+      id: users.length + 1,
+    };
+    const emailCheck = users.find(user => user.email === res.email);
       if (!emailCheck) {
         setUsers(prevUsers => {
           const newUsers = [...prevUsers, res]
@@ -122,11 +117,10 @@ const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete,
         setHasEnterError(false)
       } else {
           setHasRegError(true)
-          email.current.value = '';
-          pass.current.value = '';
-          username.current.value = '';
+          setEmail('')
+          setPass('')
+          setUsername('')
       }
-    }
   }
 
   function update (id: User['id'], updatedName: string) {
@@ -173,14 +167,16 @@ const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete,
               type="email"
               placeholder="Введите e-mail"
               className="email-form" 
-              ref={email}
+              value = {email}
+              onChange = {(event) => setEmail(event.target.value)}
             />
             <p>Пароль:</p>
             <input
               type="text"
               placeholder="Введите пароль"
               className="password-form"
-              ref={pass}
+              value = {pass}
+              onChange = {(event) => setPass(event.target.value)}
             />
           </section>
           <section className="button-section">
@@ -242,21 +238,24 @@ const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete,
           type="text"
           placeholder="Введите имя"
           className="name-form" 
-          ref={username}
+          value = {username}
+          onChange = {(event) => setUsername(event.target.value)}
         />
         <p>Адрес электронной почты:</p>
         <input 
           type="email"
           placeholder="Введите e-mail"
           className="email-form" 
-          ref={email}
+          value = {email}
+          onChange = {(event) => setEmail(event.target.value)}
         />
         <p>Пароль:</p>
         <input
           type="text"
           placeholder="Введите пароль"
           className="password-form"
-          ref={pass}
+          value = {pass}
+          onChange = {(event) => setPass(event.target.value)}
         />
       </section>
       <section className="button-section">
