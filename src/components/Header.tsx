@@ -1,24 +1,30 @@
 import { useState, FC, useMemo} from "react"
 import Order from "./Order";
 import { Link, useLocation } from "react-router-dom";
-import { ItemsType, ItemType } from "../data";
+import { ItemType } from "../data";
+import { useSelector } from "react-redux";
+import { RootStateType } from "../reduxStore";
 
 type HeaderProps = {
-  orders: [] | ItemsType,
   onDelete: (id: ItemType['id']) => void,
   plus: (id: ItemType['id']) => void,
   minus: (id: ItemType['id']) => void,
   inAccount: boolean
 }
 
-const Header: FC<HeaderProps> = ({orders, onDelete, plus, minus, inAccount}) => {
+const Header: FC<HeaderProps> = ({onDelete, plus, minus, inAccount}) => {
 
   const [cartOpen, setCartOpen] = useState<boolean>(false)
   const location = useLocation()
 
+  const orders = useSelector((state: RootStateType) => state.orders)
+
   const totalSum = useMemo(() => {
     return orders.reduce((sum, item) => sum + item.price * (item.quantity ?? 0), 0);
   }, [orders]);
+
+
+
 
   return (
     <header>

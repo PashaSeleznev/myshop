@@ -24,7 +24,6 @@ const MainPage: FC<MainPageProps> = ({
     inAccount
 }) => {
 
-  console.log('Main')
 
   const [showFullItem, setShowFullItem] = useState<boolean>(false) 
   const [fullItem, setFullItem] = useState<ItemType | null>(null)

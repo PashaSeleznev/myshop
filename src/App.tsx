@@ -1,105 +1,69 @@
 import MainPage from "./components/MainPage"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
-import { useState, useEffect} from "react"
+import { useState} from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Contacts from "./components/Contacts"
 import Account from "./components/Account"
-import store from "store"
-import { ItemType, ItemsType } from "./data";
+import { Provider } from "react-redux"
+import {reduxStore} from "./reduxStore";
+import { ItemType } from "./data";
+import store from "store";
 
-function App() {
-  const storedOrders: ItemsType | [] = store.get('orders') || [];
-  const [orders, setOrders] = useState<ItemsType | []>(storedOrders)
+
+const App = () => {
   const [inAccount, setInAccount] = useState<boolean>(store.get('inAccount') || false)
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
-  const [deleteItemId, setDeleteItemId] = useState<number>(0)
-
-  useEffect(() => {
-    store.set('orders', orders);
-  }, [orders]); 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteItemId, setDeleteItemId] = useState<number>(0);
 
   const addToOrder = (item: ItemType) => {
-    if (inAccount) {
-      let isInArray = false
-    const updatedOrders: ItemsType = orders.map ((el: ItemType) => {
-      if (el.id === item.id) {
-        isInArray = true
-        return {...el, quantity: (el.quantity ?? 0) + 1}
-      }
-      return el
-    })
-    if (!isInArray) {
-      setOrders([...orders, {...item, quantity: 1}])
-    } else {
-      setOrders(updatedOrders)
-    }
-    } else {
-      console.log('Не вошел')
-    }
-  }
+    reduxStore.dispatch({ type: "ADD_TO_ORDER", payload: item });
+  };
 
-  const deleteOrder = (id: ItemType['id']) => {
-    setDeleteItemId(id)
-    setShowDeleteModal(true)
-  }
+  const deleteOrder = (id: ItemType["id"]) => {
+    setDeleteItemId(id);
+    setShowDeleteModal(true);
+  };
 
-  const handleDelete = () =>{
-    const filteredOrders: ItemsType = orders.filter((el) => (
-      el.id !== deleteItemId
-    ))
-    setShowDeleteModal(false)
-    setOrders(filteredOrders)
-  }
+  const handleDelete = () => {
+    reduxStore.dispatch({ type: "DELETE_ORDER", payload: deleteItemId });
+    setShowDeleteModal(false);
+    setDeleteItemId(0);
+  };
 
   const handleCancel = () => {
-    setShowDeleteModal(false)
-    setDeleteItemId(0)
-  }
+    setShowDeleteModal(false);
+    setDeleteItemId(0);
+  };
 
-  function plus (id: ItemType['id']) {
-    const updatedOrders = orders.map (el => {
-      if (el.id === id) {
-        return {...el, quantity: (el.quantity ?? 0) + 1}
-      }
-      return el
-    })
-    setOrders(updatedOrders)
-  }
+  const plus = (id: ItemType["id"]) => {
+    reduxStore.dispatch({ type: "INCREMENT_QUANTITY", payload: id });
+  };
 
-  function minus (id: ItemType['id']) {
-    let remove = false
-    const updatedOrders = orders.map (el => {
-      if (el.id === id) {
-        if (el.quantity == 1) {
-          remove = true
-        }
-        return {...el, quantity: (el.quantity ?? 0) - 1}
-      }
-      return el
-    })
-    if (remove) {
-      deleteOrder(id)
+  const minus = (id: ItemType["id"]) => {
+    const item = reduxStore.getState().orders.find((el: ItemType) => el.id === id);
+    if (item && item.quantity === 1) {
+      deleteOrder(id);
     } else {
-      setOrders(updatedOrders)
+      reduxStore.dispatch({ type: "DECREMENT_QUANTITY", payload: id });
     }
-  }
+  };
 
-  function toLogin (status: boolean) {
-    setInAccount(status);
-    store.set('inAccount', status);
-  }
-
+  const toLogin = (status: boolean) => {
+        setInAccount(status);
+        store.set('inAccount', status);
+      }
 
   return (
-    <Router>
+    <Provider store = {reduxStore}>
+      <Router>
       <div className="wrapper">
-        <Header 
-        orders = {orders} 
+        <Header  
+        inAccount = {inAccount}
         onDelete = {deleteOrder} 
         plus = {plus} 
-        minus = {minus}
-        inAccount = {inAccount} ></Header>
+        minus = {minus} >
+        </Header>
         <Routes> 
           
           <Route path="/"
@@ -135,7 +99,8 @@ function App() {
         </Routes> 
         <Footer></Footer>
       </div>
-    </Router>
+      </Router>
+    </Provider>
   )
 }
 
