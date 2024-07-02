@@ -8,7 +8,7 @@ type SearchProps = {
 
 const Search: FC<SearchProps> = memo(({ findItem }) => {
 
-  const filter = useSelector((state: RootStateType) => state.filter)
+  const filter = useSelector((state: RootStateType) => state.filter.input)
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value

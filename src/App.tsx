@@ -41,7 +41,7 @@ const App = () => {
   };
 
   const minus = (id: ItemType["id"]) => {
-    const item = reduxStore.getState().orders.find((el: ItemType) => el.id === id);
+    const item = reduxStore.getState().shopCart.orders.find((el: ItemType) => el.id === id);
     if (item && item.quantity === 1) {
       deleteOrder(id);
     } else {

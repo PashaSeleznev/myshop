@@ -17,7 +17,7 @@ const Header: FC<HeaderProps> = ({deleteOrder, plus, minus, inAccount}) => {
   const [cartOpen, setCartOpen] = useState<boolean>(false)
   const location = useLocation()
 
-  const orders = useSelector((state: RootStateType) => state.orders)
+  const orders = useSelector((state: RootStateType) => state.shopCart.orders)
 
   const totalSum = useMemo(() => {
     return orders.reduce((sum, item) => sum + item.price * (item.quantity ?? 0), 0);

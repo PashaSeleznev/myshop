@@ -12,7 +12,7 @@ export type ItemsSectionProps = {
 
 const ItemsSection: FC<ItemsSectionProps> = ({onAdd, onShowItem, inAccount}) => {
 
-  const items = useSelector((state: RootStateType) => state.currentItems)
+  const items = useSelector((state: RootStateType) => state.filter.currentItems)
 
   const [empty, setEmpty] = useState<boolean>(false)
   console.log('ItemsSection')
