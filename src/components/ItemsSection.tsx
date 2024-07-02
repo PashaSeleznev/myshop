@@ -1,15 +1,19 @@
 import Item from './Item';
 import { useState, useEffect, FC} from 'react';
-import { ItemsType, ItemType } from '../data';
+import { ItemType } from '../data';
+import { useSelector } from 'react-redux';
+import { RootStateType } from '../reduxStore';
 
 export type ItemsSectionProps = {
-  items: ItemsType,
   onAdd: (item: ItemType) => void,
   onShowItem: (item: ItemType) => void,
   inAccount: boolean
 }
 
-const ItemsSection: FC<ItemsSectionProps> = ({items, onAdd, onShowItem, inAccount}) => {
+const ItemsSection: FC<ItemsSectionProps> = ({onAdd, onShowItem, inAccount}) => {
+
+  const items = useSelector((state: RootStateType) => state.currentItems)
+
   const [empty, setEmpty] = useState<boolean>(false)
   console.log('ItemsSection')
   useEffect(() => {

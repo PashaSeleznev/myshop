@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 import { RootStateType } from "../reduxStore";
 
 type HeaderProps = {
-  onDelete: (id: ItemType['id']) => void,
+  deleteOrder: (id: ItemType['id']) => void,
   plus: (id: ItemType['id']) => void,
   minus: (id: ItemType['id']) => void,
   inAccount: boolean
 }
 
-const Header: FC<HeaderProps> = ({onDelete, plus, minus, inAccount}) => {
+const Header: FC<HeaderProps> = ({deleteOrder, plus, minus, inAccount}) => {
 
   const [cartOpen, setCartOpen] = useState<boolean>(false)
   const location = useLocation()
@@ -66,7 +66,7 @@ const Header: FC<HeaderProps> = ({onDelete, plus, minus, inAccount}) => {
                   <Order 
                   key={item.id} 
                   item = {item} 
-                  onDelete = {onDelete} 
+                  onDelete = {deleteOrder} 
                   plus={plus} 
                   minus={minus} 
                   />)}

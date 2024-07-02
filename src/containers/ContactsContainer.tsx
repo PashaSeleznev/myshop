@@ -1,11 +1,10 @@
-import AgreeToDelete from "./AgreeToDelete"
-import MyMap from "./MyMap";
-import { MainPageProps } from "./MainPage";
+import AgreeToDelete from "../components/AgreeToDelete"
+import MyMap from "../components/MyMap";
+import { ContactsPageProps } from "../pages/ContactsPage";
 import { FC } from "react";
 
-export type ContactsProps = Pick<MainPageProps, 'handleCancel'|'handleDelete'|'showDeleteModal'>
 
-const Contacts: FC<ContactsProps> = ({showDeleteModal, handleCancel, handleDelete}) => {
+const ContactsContainer: FC<ContactsPageProps> = ({showDeleteModal, handleCancel, handleDelete}) => {
   return (
     <div className="contacts">
       <h2>Наши контакты:</h2>
@@ -22,4 +21,4 @@ const Contacts: FC<ContactsProps> = ({showDeleteModal, handleCancel, handleDelet
   )
 }
 
-export default Contacts
+export default ContactsContainer

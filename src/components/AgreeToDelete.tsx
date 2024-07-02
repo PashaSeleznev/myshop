@@ -1,4 +1,4 @@
-import { MainPageProps } from './MainPage';
+import { MainPageProps } from '../pages/MainPage';
 import { FC } from 'react';
 
 type AgreeToDeleteProps = Pick<MainPageProps, 'handleCancel'|'handleDelete'>

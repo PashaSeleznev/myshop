@@ -1,10 +1,10 @@
-import MainPage from "./components/MainPage"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import { useState} from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Contacts from "./components/Contacts"
-import Account from "./components/Account"
+import MainPage from "./pages/MainPage";
+import ContactsPage from "./pages/ContactsPage";
+import AccountPage from "./pages/AccountPage";
 import { Provider } from "react-redux"
 import {reduxStore} from "./reduxStore";
 import { ItemType } from "./data";
@@ -60,7 +60,7 @@ const App = () => {
       <div className="wrapper">
         <Header  
         inAccount = {inAccount}
-        onDelete = {deleteOrder} 
+        deleteOrder = {deleteOrder} 
         plus = {plus} 
         minus = {minus} >
         </Header>
@@ -79,7 +79,7 @@ const App = () => {
 
           <Route path="/contacts" 
           element = {
-            <Contacts 
+            <ContactsPage 
             handleCancel = {handleCancel}
             handleDelete = {handleDelete}
             showDeleteModal = {showDeleteModal}
@@ -88,7 +88,7 @@ const App = () => {
 
           <Route path="/account" 
           element = {
-            <Account 
+            <AccountPage 
             handleCancel = {handleCancel}
             handleDelete = {handleDelete}
             showDeleteModal = {showDeleteModal}

@@ -1,17 +1,18 @@
-import { useState, FC, memo } from "react"
-import store from "store";
+import { FC, memo } from "react"
+import { RootStateType, reduxStore } from "../reduxStore";
+import { useSelector } from "react-redux";
 
 type SearchProps = {
   findItem: (text: string) => void
 }
 
 const Search: FC<SearchProps> = memo(({ findItem }) => {
-  const [filter, setFilter] = useState<string>(store.get("filter") || "");
+
+  const filter = useSelector((state: RootStateType) => state.filter)
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value;
-    setFilter(value);
-    store.set("filter", value);
+    const value = event.target.value
+    reduxStore.dispatch({ type: "INPUT_CHANGE", payload: value })
     findItem(value);
   }
 

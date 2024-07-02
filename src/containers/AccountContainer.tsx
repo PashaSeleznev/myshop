@@ -1,9 +1,7 @@
-import AgreeToDelete from "./AgreeToDelete"
+import AgreeToDelete from "../components/AgreeToDelete"
 import { useState, useEffect, FC, ChangeEvent } from "react";
 import store from "store";
-import { ContactsProps } from "./Contacts";
-
-type AccountProps = ContactsProps & {toLogin: (status: boolean) => void}
+import { AccountPageProps } from "../pages/AccountPage";
 
 type Geo = {
   lat: string;
@@ -24,7 +22,7 @@ type Company = {
   bs: string;
 };
 
-type User = {
+export type User = {
   id: number;
   name: string;
   username?: string;
@@ -35,9 +33,9 @@ type User = {
   company?: Company;
 };
 
-type Users = User[]
+export type Users = User[]
 
-const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete, toLogin}) => {
+const AccountContainer: FC<AccountPageProps> = ({showDeleteModal, handleCancel, handleDelete, toLogin}) => {
   const [isEntered, setIsEntered] = useState<boolean>(store.get('isEntered') || false)
   const [isRegistered, setIsRegistered] = useState<boolean>(true)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -278,4 +276,4 @@ const Account: FC<AccountProps> = ({showDeleteModal, handleCancel, handleDelete,
   )
 }
 
-export default Account
+export default AccountContainer
